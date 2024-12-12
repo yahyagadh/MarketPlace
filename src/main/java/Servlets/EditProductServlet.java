@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -53,7 +54,7 @@ public class EditProductServlet extends HttpServlet {
         // Connexion à la base de données
         String url = "jdbc:postgresql://localhost:5432/ecommerce";
         String username = "postgres";
-        String password = "123456";
+        String password = "admin123";
 
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             Class.forName("org.postgresql.Driver");
@@ -68,7 +69,8 @@ public class EditProductServlet extends HttpServlet {
 
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected > 0) {
-                    response.sendRedirect("ProductServlet?action=list"); // Redirige vers la liste des produits après mise à jour
+                	RequestDispatcher dispatcher = request.getRequestDispatcher("productlist.jsp");
+                    dispatcher.forward(request, response); // Redirige vers la liste des produits après mise à jour
                 } else {
                     response.getWriter().println("Erreur : Produit introuvable ou mise à jour échouée.");
                 }

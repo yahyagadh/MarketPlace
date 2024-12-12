@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -19,7 +20,7 @@ public class UserServlet extends HttpServlet {
 
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/ecommerce";
     private static final String DB_USERNAME = "postgres";
-    private static final String DB_PASSWORD = "123456";
+    private static final String DB_PASSWORD = "admin123";
 
     public UserServlet() {
         super();
@@ -33,7 +34,7 @@ public class UserServlet extends HttpServlet {
         } else if ("delete".equals(action)) {
             String userId = request.getParameter("id");
             if (userId != null && !userId.isEmpty()) {
-                deleteUser(Integer.parseInt(userId), response);
+                deleteUser(Integer.parseInt(userId), request, response);  // Corrected this line
             }
         } else {
             response.getWriter().write("Invalid action.");
@@ -72,7 +73,7 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    private void deleteUser(int userId, HttpServletResponse response) throws IOException {
+    private void deleteUser(int userId, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD)) {
             Class.forName("org.postgresql.Driver");
 
@@ -82,8 +83,8 @@ public class UserServlet extends HttpServlet {
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
-                response.sendRedirect("UserServlet?action=list");
-            } else {
+                // Redirecting after successful deletion to show the updated user list
+            	response.sendRedirect("user_list.jsp");            } else {
                 response.getWriter().write("Erreur : utilisateur introuvable.");
             }
         } catch (SQLException | ClassNotFoundException e) {

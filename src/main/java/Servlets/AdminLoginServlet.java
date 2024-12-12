@@ -15,7 +15,7 @@ public class AdminLoginServlet extends HttpServlet {
      // Paramètres de la base de données
         String url = "jdbc:postgresql://localhost:5432/ecommerce";
         String username = "postgres";
-        String dbPassword = "123456"; 	
+        String dbPassword = "admin123"; 	
 
         try {
             /// Charger le driver PostgreSQL

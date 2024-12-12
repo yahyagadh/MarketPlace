@@ -35,7 +35,7 @@
             <%
                 String url = "jdbc:postgresql://localhost:5432/ecommerce";
                 String username = "postgres";
-                String password = "123456";
+                String password = "admin123";
                 
                 try {
                     Class.forName("org.postgresql.Driver"); 
@@ -63,7 +63,7 @@
                                         <h6 class="card-text text-primary"><%= String.format("%.2f", price) %> €</h6>
                                     </div>
                                     <div class="d-flex justify-content-between p-3">
-                                        <a href="editproduct.jsp?id=<%= productId %>" class="btn btn-warning btn-custom">Modifier</a>
+                                        <a href="product_detail.jsp?id=<%= productId %>" class="btn btn-warning btn-custom">Modifier</a>
                                         <a href="ProductServlet?action=delete&id=<%= productId %>" class="btn btn-danger btn-custom" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">Supprimer</a>
                                     </div>
                                 </a>

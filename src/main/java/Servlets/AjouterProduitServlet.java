@@ -1,8 +1,8 @@
 package Servlets;
 
 import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
 
 import jakarta.servlet.annotation.WebServlet;
 
@@ -60,7 +60,7 @@ public class AjouterProduitServlet extends HttpServlet {
             String imagePath = "/uploads/" + fileName;
 
             // Insérer le produit dans la base de données (exemple de code)
-            try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ecommerce", "postgres", "123456")) {
+            try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ecommerce", "postgres", "admin123")) {
                 String sql = "INSERT INTO products (nom, description, prix, stock, categorie_id, image) VALUES (?, ?, ?, ?, ?, ?)";
                 try (PreparedStatement ps = conn.prepareStatement(sql)) {
                     ps.setString(1, nom);

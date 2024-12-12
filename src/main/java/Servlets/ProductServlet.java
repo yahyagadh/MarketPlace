@@ -1,6 +1,7 @@
 package Servlets;
 
 import java.io.File;
+
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -9,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,7 +21,7 @@ import jakarta.servlet.http.Part;
 
 @WebServlet("/ProductServlet")
 @MultipartConfig(
-    location = "C:\\Users\\user\\eclipse-workspace\\Market\\src\\main\\webapp\\uploads",
+    location = "C:\\Users\\user\\jee\\JEE\\src\\main\\webapp\\uploads",
     fileSizeThreshold = 1024 * 1024 * 2, // 2MB
     maxFileSize = 1024 * 1024 * 10,      // 10MB
     maxRequestSize = 1024 * 1024 * 50    // 50MB
@@ -27,7 +29,8 @@ import jakarta.servlet.http.Part;
 public class ProductServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    private static final String IMAGE_UPLOAD_DIR = "C:\\Users\\user\\eclipse-workspace\\Market\\src\\main\\webapp\\uploads";
+    private static final String IMAGE_UPLOAD_DIR = "C:\\Users\\user\\jee\\JEE\\src\\main\\webapp\\uploads";
+    
 
     public ProductServlet() {
         super();
@@ -59,7 +62,7 @@ public class ProductServlet extends HttpServlet {
     private void displayProducts(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String url = "jdbc:postgresql://localhost:5432/ecommerce";
         String username = "postgres";
-        String password = "123456";
+        String password = "admin123";
 
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             Class.forName("org.postgresql.Driver");
@@ -95,7 +98,7 @@ public class ProductServlet extends HttpServlet {
     private void deleteProductById(int productId, HttpServletResponse response) throws IOException {
         String url = "jdbc:postgresql://localhost:5432/ecommerce";
         String username = "postgres";
-        String password = "123456";
+        String password = "admin123";
 
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             Class.forName("org.postgresql.Driver");
@@ -116,37 +119,66 @@ public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("name");
-        String description = request.getParameter("description");
+    	String name = request.getParameter("name");
+    	String description = request.getParameter("description");
+    	String priceParam = request.getParameter("price");
+    	String stockParam = request.getParameter("stock");
+    	String categoryIdParam = request.getParameter("category_id");
+    	
+    	System.out.println("Name: " + name);
+    	System.out.println("Description: " + description);
+    	System.out.println("Price: " + priceParam);
+    	System.out.println("Stock: " + stockParam);
+    	System.out.println("Category ID: " + categoryIdParam);
+
+        // Check if the fields are not null
+        if (name == null || description == null || priceParam == null || stockParam == null || categoryIdParam == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "All fields are required.");
+            return;
+        }
+
         double price = 0;
         int stock = 0;
         int categoryId = 0;
 
         try {
-            price = Double.parseDouble(request.getParameter("price").trim());
-            stock = Integer.parseInt(request.getParameter("stock").trim());
-            categoryId = Integer.parseInt(request.getParameter("category_id").trim());
+            // Parse the numerical fields
+            price = Double.parseDouble(priceParam.trim());
+            stock = Integer.parseInt(stockParam.trim());
+            categoryId = Integer.parseInt(categoryIdParam.trim());
         } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Entrées numériques invalides.");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid numeric values for price, stock, or category.");
             return;
         }
 
+        // Handle file upload
         Part imagePart = request.getPart("image");
         String imagePath = null;
 
         if (imagePart != null && imagePart.getSize() > 0) {
+            System.out.println("Image uploaded: " + imagePart.getSubmittedFileName());
+
+            // Define the directory to save uploaded images
             File uploadDir = new File(IMAGE_UPLOAD_DIR);
             if (!uploadDir.exists()) {
                 uploadDir.mkdirs();
             }
+          
 
+            // Get the file name
             String fileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
             File imageFile = new File(uploadDir, fileName);
             imagePart.write(imageFile.getAbsolutePath());
             imagePath = "uploads/" + fileName;
+            System.out.println("Saving file to: " + imageFile.getAbsolutePath());
+
+        }
+        else {
+        	 System.out.println("No image uploaded.");
         }
 
-        try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ecommerce", "postgres", "123456")) {
+        // Now insert the product into the database
+        try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ecommerce", "postgres", "admin123")) {
             Class.forName("org.postgresql.Driver");
             String sql = "INSERT INTO public.products (nom, description, prix, image, stock, categorie_id) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -158,8 +190,10 @@ public class ProductServlet extends HttpServlet {
             ps.setInt(6, categoryId);
 
             if (ps.executeUpdate() > 0) {
-                response.sendRedirect("ProductServlet?action=list");
-            } else {
+            	RequestDispatcher dispatcher = request.getRequestDispatcher("productlist.jsp");
+                dispatcher.forward(request, response);            
+                } 
+            else {
                 response.getWriter().println("Erreur lors de l'ajout du produit.");
             }
         } catch (SQLException | ClassNotFoundException e) {

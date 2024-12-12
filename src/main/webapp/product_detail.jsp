@@ -28,7 +28,7 @@
             <% 
                 String url = "jdbc:postgresql://localhost:5432/ecommerce";
                 String username = "postgres";
-                String password = "123456";
+                String password = "admin123";
 
                 String productId = request.getParameter("id");
                 boolean isEditing = "true".equals(request.getParameter("edit"));

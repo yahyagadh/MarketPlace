@@ -1,78 +1,132 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Connexion Administrateur</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Registration form </title> 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .login-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-        }
-        h2 {
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .error {
-            color: red;
-            text-align: center;
-        }
+      @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+      *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+      }
+      body{
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #4070f4;
+      }
+      .wrapper{
+        position: relative;
+        max-width: 500px; /* Increased width */
+        width: 100%;
+        background: #fff;
+        padding: 50px; /* Increased padding */
+        border-radius: 8px; /* Slightly rounder corners */
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* A bit bigger shadow */
+      }
+      .wrapper h2{
+        position: relative;
+        font-size: 26px; /* Bigger title */
+        font-weight: 600;
+        color: #333;
+      }
+      .wrapper h2::before{
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 4px; /* Increased height of the underline */
+        width: 35px; /* Slightly bigger underline */
+        border-radius: 12px;
+        background: #4070f4;
+      }
+      .wrapper form{
+        margin-top: 40px; /* More space before the form */
+      }
+      .wrapper form .input-box{
+        height: 60px; /* Increased input box height */
+        margin: 20px 0; /* More space between input boxes */
+      }
+      form .input-box input{
+        height: 100%;
+        width: 100%;
+        outline: none;
+        padding: 0 20px; /* Increased padding */
+        font-size: 18px; /* Larger font size */
+        font-weight: 400;
+        color: #333;
+        border: 1.5px solid #C7BEBE;
+        border-bottom-width: 3px; /* Thicker bottom border */
+        border-radius: 8px; /* Slightly rounder corners */
+        transition: all 0.3s ease;
+      }
+      .input-box input:focus,
+      .input-box input:valid{
+        border-color: #4070f4;
+      }
+      form .policy{
+        display: flex;
+        align-items: center;
+      }
+      form h3{
+        color: #707070;
+        font-size: 16px; /* Larger text for the policy */
+        font-weight: 500;
+        margin-left: 12px; /* Slightly more space */
+      }
+      .input-box.button input{
+        color: #fff;
+        letter-spacing: 1px;
+        border: none;
+        background: #4070f4;
+        cursor: pointer;
+        font-size: 18px; /* Larger button text */
+      }
+      .input-box.button input:hover{
+        background: #0e4bf1;
+      }
+      form .text h3{
+        color: #333;
+        width: 100%;
+        text-align: center;
+      }
+      form .text h3 a{
+        color: #4070f4;
+        text-decoration: none;
+      }
+      form .text h3 a:hover{
+        text-decoration: underline;
+      }
     </style>
-</head>
+    </head>
 <body>
-    <div class="login-container">
-        <h2>Connexion Admin</h2>
-        <form action="AdminLoginServlet" method="post">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" name="email" id="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Mot de passe</label>
-                <input type="password" name="password" id="password" required>
-            </div>
-            <button type="submit">Se connecter</button>
-        </form>
-        <%
-            String error = (String) request.getAttribute("error");
-            if (error != null) {
-        %>
-        <p class="error"><%= error %></p>
-        <% } %>
+<div class="wrapper">
+      <h2>Registration</h2>
+      <form action="AdminLoginServlet" method="POST">
+        <div class="input-box">
+          <input type="email" name="email" placeholder="Enter your email"  value="${email != null ? email : ''}" required>
+        </div>
+        <div class="input-box">
+          <input type="password" name="password" placeholder="Enter your password" required>
+        </div>
+        <p style="color: red;">
+        ${errorMessage != null ? errorMessage : ''}
+    </p>
+        <div class="input-box button">
+          <input type="submit" value="Login">
+        </div>
+        <div class="text">
+          <h3>Don't have an account?<a href="inscription.jsp">Sign up now</a></h3>
+        </div>
+      </form>
+      
     </div>
 </body>
+
 </html>

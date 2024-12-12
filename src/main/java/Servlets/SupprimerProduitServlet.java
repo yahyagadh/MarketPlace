@@ -1,16 +1,19 @@
 package Servlets;
 
 import java.io.IOException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import jakarta.servlet.RequestDispatcher;
 
 /**
  * Servlet implementation class SupprimerProduitServlet
@@ -25,14 +28,16 @@ public class SupprimerProduitServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int produitId = Integer.parseInt(request.getParameter("id"));
 
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ecommerce", "postgres", "123456")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ecommerce", "postgres", "admin123")) {
             String sql = "DELETE FROM produits WHERE id = ?";
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setInt(1, produitId);
                 stmt.executeUpdate();
             }
-            response.sendRedirect("GestionProduits.jsp");
-        } catch (SQLException e) {
+            RequestDispatcher dispatcher = (RequestDispatcher) request.getRequestDispatcher("productlist.jsp");
+            dispatcher.forward(request, response);        
+            }
+        catch (SQLException e) {
             e.printStackTrace();
             response.getWriter().println("Erreur lors de la suppression du produit : " + e.getMessage());
         }
