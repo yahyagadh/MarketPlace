@@ -1,24 +1,29 @@
 package Servlets;
 
 import jakarta.servlet.*;
+
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.sql.*;
 @WebServlet("/AdminLoginServlet")
 public class AdminLoginServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
         // Informations de connexion à la base de données
-     // Paramètres de la base de données
         String url = "jdbc:postgresql://localhost:5432/ecommerce";
         String username = "postgres";
-        String dbPassword = "admin123"; 	
+        String dbPassword = "123456";    
 
         try {
-            /// Charger le driver PostgreSQL
+            // Charger le driver PostgreSQL
             Class.forName("org.postgresql.Driver");
             Connection connection = DriverManager.getConnection(url, username, dbPassword);
 
@@ -31,12 +36,14 @@ public class AdminLoginServlet extends HttpServlet {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                // Récupérer le rôle de l'utilisateur
+                // Récupérer l'id et le rôle de l'utilisateur
+                int utilisateurId = resultSet.getInt("id");
                 String role = resultSet.getString("role");
 
                 // Créer une session
                 HttpSession session = request.getSession();
                 session.setAttribute("user", email);
+                session.setAttribute("utilisateurId", utilisateurId);
 
                 if ("administrateur".equals(role)) {
                     // Redirection vers le dashboard admin

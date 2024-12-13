@@ -1,6 +1,8 @@
-package ServletsClient;
+package Servlets;
 
 import jakarta.servlet.RequestDispatcher;
+
+
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -44,7 +46,7 @@ public class InscriptionServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String url = "jdbc:postgresql://localhost:5432/ecommerce";
 		String username="postgres";
-		String db_password="admin123";
+		String db_password="123456";
 		String pwd= request.getParameter("password");
 		String pwd2= request.getParameter("confirmPassword");
 		String nom=request.getParameter("username");
@@ -94,7 +96,7 @@ public class InscriptionServlet extends HttpServlet {
                     // Redirect to home.jsp after successful registration
                     request.setAttribute("email", email);
                     request.setAttribute("username", nom);
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("/home.jsp");
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/userDashboard.jsp");
                     dispatcher.forward(request, response);
                 } else {
                     // Passwords do not match

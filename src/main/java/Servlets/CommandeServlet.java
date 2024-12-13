@@ -29,7 +29,7 @@ public class CommandeServlet extends HttpServlet {
                 // Connexion à la base de données
                 String url = "jdbc:postgresql://localhost:5432/ecommerce";
                 String username = "postgres";
-                String password = "admin123";
+                String password = "123456";
                 Connection conn = DriverManager.getConnection(url, username, password);
                 System.out.println("Connexion réussie à la base de données.");
 

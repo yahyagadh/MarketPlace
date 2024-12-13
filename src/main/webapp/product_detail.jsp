@@ -1,5 +1,5 @@
-<%@ page import="java.sql.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -28,7 +28,7 @@
             <% 
                 String url = "jdbc:postgresql://localhost:5432/ecommerce";
                 String username = "postgres";
-                String password = "admin123";
+                String password = "123456";
 
                 String productId = request.getParameter("id");
                 boolean isEditing = "true".equals(request.getParameter("edit"));
@@ -105,7 +105,7 @@
                     <a href="product_detail.jsp?id=<%= productId %>&edit=true" class="btn btn-warning me-2">
                         <i class="fas fa-edit"></i> Modifier
                     </a>
-                    <a href="supprimer_produit.jsp?id=<%= productId %>" class="btn btn-danger">
+                    <a href="SupprimerProduitServlet?id=<%= productId %>" class="btn btn-danger">
                         <i class="fas fa-trash"></i> Supprimer
                     </a>
                 </div>

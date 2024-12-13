@@ -54,7 +54,7 @@ public class EditProductServlet extends HttpServlet {
         // Connexion à la base de données
         String url = "jdbc:postgresql://localhost:5432/ecommerce";
         String username = "postgres";
-        String password = "admin123";
+        String password = "123456";
 
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             Class.forName("org.postgresql.Driver");

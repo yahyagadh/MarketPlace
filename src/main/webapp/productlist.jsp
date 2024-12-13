@@ -25,7 +25,12 @@
 <body>
     <div class="container product-container">
         <h1 class="text-center mb-4">Liste des Produits</h1>
-        
+
+        <!-- Bouton pour retourner à l'admin dashboard -->
+        <div class="text-center mb-4">
+            <a href="adminDashboard.jsp" class="btn btn-secondary btn-lg">Retour à l'Admin Dashboard</a>
+        </div>
+
         <!-- Bouton pour ajouter un produit -->
         <div class="text-center mb-4">
             <a href="add_product.jsp" class="btn btn-primary btn-lg">Ajouter un nouveau produit</a>
@@ -35,7 +40,7 @@
             <%
                 String url = "jdbc:postgresql://localhost:5432/ecommerce";
                 String username = "postgres";
-                String password = "admin123";
+                String password = "123456";
                 
                 try {
                     Class.forName("org.postgresql.Driver"); 
@@ -64,7 +69,7 @@
                                     </div>
                                     <div class="d-flex justify-content-between p-3">
                                         <a href="product_detail.jsp?id=<%= productId %>" class="btn btn-warning btn-custom">Modifier</a>
-                                        <a href="ProductServlet?action=delete&id=<%= productId %>" class="btn btn-danger btn-custom" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">Supprimer</a>
+                                        <a href="SupprimerProduitServlet?action=delete&id=<%= productId %>" class="btn btn-danger btn-custom" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">Supprimer</a>
                                     </div>
                                 </a>
                             </div>

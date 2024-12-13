@@ -20,7 +20,7 @@ public class UserServlet extends HttpServlet {
 
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/ecommerce";
     private static final String DB_USERNAME = "postgres";
-    private static final String DB_PASSWORD = "admin123";
+    private static final String DB_PASSWORD = "123456";
 
     public UserServlet() {
         super();
@@ -77,14 +77,21 @@ public class UserServlet extends HttpServlet {
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD)) {
             Class.forName("org.postgresql.Driver");
 
-            String sql = "DELETE FROM public.utilisateurs WHERE id = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, userId);
+            // Supprimer d'abord les commandes associées à l'utilisateur
+            String deleteOrdersSql = "DELETE FROM public.orders WHERE utilisateur_id = ?";
+            PreparedStatement deleteOrdersStmt = conn.prepareStatement(deleteOrdersSql);
+            deleteOrdersStmt.setInt(1, userId);
+            deleteOrdersStmt.executeUpdate();
 
-            int rowsAffected = ps.executeUpdate();
+            // Supprimer ensuite l'utilisateur
+            String deleteUserSql = "DELETE FROM public.utilisateurs WHERE id = ?";
+            PreparedStatement deleteUserStmt = conn.prepareStatement(deleteUserSql);
+            deleteUserStmt.setInt(1, userId);
+
+            int rowsAffected = deleteUserStmt.executeUpdate();
             if (rowsAffected > 0) {
-                // Redirecting after successful deletion to show the updated user list
-            	response.sendRedirect("user_list.jsp");            } else {
+                response.sendRedirect("user_list.jsp"); // Rediriger après suppression
+            } else {
                 response.getWriter().write("Erreur : utilisateur introuvable.");
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -92,4 +99,5 @@ public class UserServlet extends HttpServlet {
             response.getWriter().write("Erreur SQL : " + e.getMessage());
         }
     }
-}
+
+    }

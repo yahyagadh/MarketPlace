@@ -62,7 +62,7 @@ public class ProductServlet extends HttpServlet {
     private void displayProducts(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String url = "jdbc:postgresql://localhost:5432/ecommerce";
         String username = "postgres";
-        String password = "admin123";
+        String password = "123456";
 
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             Class.forName("org.postgresql.Driver");
@@ -98,7 +98,7 @@ public class ProductServlet extends HttpServlet {
     private void deleteProductById(int productId, HttpServletResponse response) throws IOException {
         String url = "jdbc:postgresql://localhost:5432/ecommerce";
         String username = "postgres";
-        String password = "admin123";
+        String password = "123456";
 
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             Class.forName("org.postgresql.Driver");
@@ -178,7 +178,7 @@ public class ProductServlet extends HttpServlet {
         }
 
         // Now insert the product into the database
-        try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ecommerce", "postgres", "admin123")) {
+        try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ecommerce", "postgres", "123456")) {
             Class.forName("org.postgresql.Driver");
             String sql = "INSERT INTO public.products (nom, description, prix, image, stock, categorie_id) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);

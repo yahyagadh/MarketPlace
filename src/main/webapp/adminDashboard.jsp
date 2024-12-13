@@ -113,7 +113,7 @@
 <body>
     <header>
         <h1>Dashboard Administrateur</h1>
-        <a href="logout" class="logout">Se Déconnecter</a>
+        <a href="Connexion.jsp" class="logout">Se Déconnecter</a>
     </header>
     <div class="dashboard">
         <a href="productlist.jsp">

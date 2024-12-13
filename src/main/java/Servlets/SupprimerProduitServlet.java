@@ -28,8 +28,8 @@ public class SupprimerProduitServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int produitId = Integer.parseInt(request.getParameter("id"));
 
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ecommerce", "postgres", "admin123")) {
-            String sql = "DELETE FROM produits WHERE id = ?";
+        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ecommerce", "postgres", "123456")) {
+            String sql = "DELETE FROM products WHERE id = ?";
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setInt(1, produitId);
                 stmt.executeUpdate();

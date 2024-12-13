@@ -26,7 +26,7 @@ public class AddServlet extends HttpServlet {
         // Paramètres de la base de données
         String url = "jdbc:postgresql://localhost:5432/ecommerce";
         String username = "postgres";
-        String dbPassword = "admin123";
+        String dbPassword = "123456";
 
         // Récupération des données du formulaire
         String pwd = request.getParameter("password");
