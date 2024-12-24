@@ -107,7 +107,7 @@
     </head>
 <body>
 <div class="wrapper">
-      <h2>Registration</h2>
+      <h2>Connexion</h2>
       <form action="AdminLoginServlet" method="POST">
         <div class="input-box">
           <input type="email" name="email" placeholder="Enter your email"  value="${email != null ? email : ''}" required>

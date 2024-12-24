@@ -61,55 +61,17 @@
     <!-- Navbar for User Homepage -->
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="userDashboard.jsp">Home</a>
+        <a class="navbar-brand" href="home.jsp">Home</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item me-3">
-                    <a class="nav-link" href="panier.jsp">Panier</a>
-                </li>
-                <li class="nav-item dropdown me-3">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Catégories
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <% 
-                            // Récupération des catégories depuis la base de données
-                            String db_url = "jdbc:postgresql://localhost:5432/ecommerce";
-                            String db_username = "postgres";
-                            String db_password = "123456";
-
-                            try {
-                                Class.forName("org.postgresql.Driver");
-                                Connection conn = DriverManager.getConnection(db_url, db_username, db_password);
-
-                                String sql = "SELECT id, nom FROM public.categorie";
-                                PreparedStatement ps = conn.prepareStatement(sql);
-                                ResultSet rs = ps.executeQuery();
-
-                                while (rs.next()) {
-                                    int categoryId = rs.getInt("id");
-                                    String categoryName = rs.getString("nom");
-                        %>
-                                    <li><a class="dropdown-item" href="category.jsp?id=<%= categoryId %>"><%= categoryName %></a></li>
-                        <% 
-                                }
-                                rs.close();
-                                ps.close();
-                            } catch (SQLException | ClassNotFoundException e) {
-                                e.printStackTrace();
-                                out.print("Erreur de connexion à la base de données: " + e.getMessage());
-                            }
-                        %>
-                    </ul>
-                </li>
-                <li class="nav-item me-3">
-                    <a class="nav-link" href="HistoriqueCommandeServlet">Historique commandes</a>
-                </li>
+                
+                
+                
                 <li class="nav-item">
-                    <a class="nav-link" href="LogoutServlet">Déconnexion</a>
+                    <a class="nav-link" href="Connexion.jsp">Se Connecter</a>
                 </li>
             </ul>
         </div>
@@ -150,7 +112,7 @@
             %>
                             <div class="col">
                                 <div class="card h-100 shadow-sm">
-                                    <a href="product_detail_user.jsp?id=<%= productId %>" class="text-decoration-none">
+                                    <a href="product_detail_visiteur.jsp?id=<%= productId %>" class="text-decoration-none">
                                         <img src="<%= fullImagePath %>" class="card-img-top" alt="<%= name %>">
                                         <div class="card-body">
                                             <h5 class="card-title text-dark"><%= name %></h5>

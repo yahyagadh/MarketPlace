@@ -15,16 +15,123 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     />
     <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .btn-custom {
+            width: 48%;
+            font-size: 1.1rem;
+        }
+
+        .btn-modern {
+            border: none;
+            font-weight: bold;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-modern:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-edit {
+            background-color: #5a99d4;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #447db3;
+        }
+
+        .btn-delete {
+            background-color: #e57373;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #d84343;
+        }
+
+        .logout {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            padding: 8px 15px;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            background-color: white;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .logout:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #007bff;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: white;
+            padding: 15px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: block;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: #0056b3;
+            transform: translateX(10px);
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
         .product-img {
-            max-height: 400px;
+            max-height: 500px;
             object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .content {
+            font-size: 1.2rem;
+            line-height: 1.6;
         }
     </style>
 </head>
 <body>
-    <div class="container py-5">
-        <h1 class="mb-4">Détails du Produit</h1>
-        <div class="row">
+    <div class="sidebar">
+        <h2>Navigation</h2>
+        <a href="adminDashboard.jsp">Dashboard</a>
+        <a href="productlist.jsp">Produits</a>
+        <a href="commandes.jsp">Commandes</a>
+        <a href="user_list.jsp">Utilisateurs</a>
+    </div>
+
+    <a href="LogoutServlet" class="logout">Se Déconnecter</a>
+
+    <div class="container d-flex align-items-center justify-content-center min-vh-100 py-5">
+        <div class="row align-items-center w-100" style="max-width: 900px;">
             <% 
                 String url = "jdbc:postgresql://localhost:5432/ecommerce";
                 String username = "postgres";
@@ -54,26 +161,25 @@
                             int stock = rs.getInt("stock");
                             String category = rs.getString("category_name");
 
-                            // Construire le chemin complet pour l'image
                             String fullImagePath = request.getContextPath() + "/" + image;
             %>
-            <!-- Détails du Produit -->
+            <!-- Product Details -->
             <div class="col-md-6">
                 <img
                     src="<%= fullImagePath %>"
                     alt="<%= name %>"
-                    class="product-img rounded w-100 h-auto"
+                    class="product-img w-100 h-auto"
                 />
             </div>
-            <div class="col-md-6">
-                <h2 class="mb-3"><%= name %></h2>
-                <p class="product-description"><strong>Description :</strong> <%= description %></p>
-                <p class="mb-1"><strong>Prix :</strong> <%= String.format("%.2f", price) %> €</p>
-                <p class="mb-1"><strong>Stock :</strong> <%= stock %> unités</p>
-                <p class="mb-1"><strong>Catégorie :</strong> <%= category %></p>
+            <div class="col-md-6 content">
+                <h2 class="mb-4"><%= name %></h2>
+                <p><strong>Description :</strong> <%= description %></p>
+                <p><strong>Prix :</strong> <%= String.format("%.2f", price) %> €</p>
+                <p><strong>Stock :</strong> <%= stock %> unités</p>
+                <p><strong>Catégorie :</strong> <%= category %></p>
 
                 <% if (isEditing) { %>
-                <!-- Formulaire de modification -->
+                <!-- Edit Form -->
                 <form action="EditProductServlet" method="post" class="mt-4">
                     <input type="hidden" name="id" value="<%= productId %>" />
 
@@ -100,12 +206,12 @@
                     </a>
                 </form>
                 <% } else { %>
-                <!-- Boutons Modifier et Supprimer -->
+                <!-- Buttons for Modify and Delete -->
                 <div class="mt-4">
-                    <a href="product_detail.jsp?id=<%= productId %>&edit=true" class="btn btn-warning me-2">
+                    <a href="product_detail.jsp?id=<%= productId %>&edit=true" class="btn btn-modern btn-edit btn-custom">
                         <i class="fas fa-edit"></i> Modifier
                     </a>
-                    <a href="SupprimerProduitServlet?id=<%= productId %>" class="btn btn-danger">
+                    <a href="SupprimerProduitServlet?id=<%= productId %>" class="btn btn-modern btn-delete btn-custom" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">
                         <i class="fas fa-trash"></i> Supprimer
                     </a>
                 </div>

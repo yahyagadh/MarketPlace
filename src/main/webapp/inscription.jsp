@@ -128,7 +128,6 @@
           <h3>Already have an account? <a href="login.jsp">Login now</a></h3>
         </div>
       </form>
-      <%=request.getAttribute("errorMessage") %>
     </div>
 </body>
 

@@ -32,7 +32,8 @@ public class ValiderCommandeServlet extends HttpServlet {
         }
 
         try (Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ecommerce", "postgres", "123456")) {
-            // Début de transaction
+            request.getRequestDispatcher("recapitulatif_commande.jsp").forward(request, response);
+
             conn.setAutoCommit(false);
 
             // 1. Insérer la commande dans la table `orders`
@@ -80,6 +81,5 @@ public class ValiderCommandeServlet extends HttpServlet {
         }
 
         // Rediriger vers la page panier
-        request.getRequestDispatcher("panier.jsp").forward(request, response);
     }
 }
